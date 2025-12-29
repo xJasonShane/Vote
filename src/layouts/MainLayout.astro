@@ -1,7 +1,7 @@
 ---
 import type { Props } from 'astro';
 import Navigation from '../components/Navigation';
-const { title = '投票评分网站' } = Astro.props as Props;
+const { title = 'Vote' } = Astro.props as Props;
 ---
 
 <!DOCTYPE html>
@@ -13,20 +13,48 @@ const { title = '投票评分网站' } = Astro.props as Props;
     <link rel="stylesheet" href="/src/styles/globals.css">
 </head>
 <body class="min-h-screen bg-gray-50 text-gray-900">
-    <header class="bg-white shadow-md">
+    <header class="bg-gradient-to-r from-white to-blue-50 shadow-md border-b border-blue-100">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-blue-600">投票评分网站</h1>
+            <a href="/" class="flex items-center">
+                <svg class="w-8 h-8 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zm0 3.84L18.03 7 12 10.16 5.97 7 12 5.84zM2 17l10 5 10-5M12 18.16l-6.03-3 6.03 3 6.03-3z" />
+                </svg>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Vote</h1>
+            </a>
             <Navigation />
         </div>
     </header>
     
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4 py-12">
         <slot />
     </main>
     
-    <footer class="bg-white shadow-inner mt-12 py-6">
-        <div class="container mx-auto px-4 text-center text-gray-600">
-            <p>© 2024 投票评分网站. All rights reserved.</p>
+    <footer class="bg-gradient-to-r from-white to-blue-50 border-t border-blue-100 mt-16 py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start mb-4">
+                    <svg class="w-6 h-6 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zm0 3.84L18.03 7 12 10.16 5.97 7 12 5.84zM2 17l10 5 10-5M12 18.16l-6.03-3 6.03 3 6.03-3z" />
+                    </svg>
+                    <h3 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Vote</h3>
+                </div>
+                <p class="text-gray-600">让投票评分变得简单有趣</p>
+                </div>
+                <div class="text-center md:text-center">
+                    <h4 class="font-semibold mb-4 text-gray-800">快速链接</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-600 hover:text-blue-600 transition-colors">首页</a></li>
+                        <li><a href="/topics" class="text-gray-600 hover:text-blue-600 transition-colors">话题</a></li>
+                        <li><a href="/create-topic" class="text-gray-600 hover:text-blue-600 transition-colors">创建话题</a></li>
+                    </ul>
+                </div>
+                <div class="text-center md:text-right">
+                    <h4 class="font-semibold mb-4 text-gray-800">版权信息</h4>
+                    <p class="text-gray-600">© 2025 Vote</p>
+                    <p class="text-gray-600 text-sm mt-1">保留所有权利</p>
+                </div>
+            </div>
         </div>
     </footer>
 </body>
