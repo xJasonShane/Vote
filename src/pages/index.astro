@@ -1,0 +1,38 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="首页">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold mb-4">欢迎来到投票评分网站</h2>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            在这里，你可以创建话题，添加角色或项目，并邀请其他人进行评分和点评。
+        </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold mb-3">创建话题</h3>
+            <p class="text-gray-600 mb-4">发起一个新的话题，设置评分规则和维度。</p>
+            <a href="/create-topic" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                立即创建
+            </a>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold mb-3">浏览话题</h3>
+            <p class="text-gray-600 mb-4">查看所有热门话题，参与评分和讨论。</p>
+            <a href="/topics" class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition-colors">
+                浏览话题
+            </a>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold mb-3">我的评分</h3>
+            <p class="text-gray-600 mb-4">查看我参与过的评分和点评记录。</p>
+            <a href="/user/ratings" class="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition-colors">
+                查看记录
+            </a>
+        </div>
+    </div>
+</MainLayout>
