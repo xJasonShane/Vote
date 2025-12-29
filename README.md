@@ -1,4 +1,25 @@
-# 投票评分网站
+# Vote - 投票评分网站
+
+<div align="center">
+  <a href="https://github.com/xJasonShane/Vote">
+    <img src="https://img.shields.io/badge/Astro-FF5D01?style=for-the-badge&logo=astro&logoColor=white" alt="Astro" />
+  </a>
+  <a href="https://github.com/xJasonShane/Vote">
+    <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
+  </a>
+  <a href="https://github.com/xJasonShane/Vote">
+    <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  </a>
+  <a href="https://github.com/xJasonShane/Vote">
+    <img src="https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  </a>
+  <a href="https://github.com/xJasonShane/Vote/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License" />
+  </a>
+  <a href="https://github.com/xJasonShane/Vote/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/xJasonShane/Vote/deploy.yml?style=for-the-badge&label=Build" alt="Build Status" />
+  </a>
+</div>
 
 一个基于Astro + React + Tailwind CSS构建的投票评分网站，支持GitHub Pages和Vercel一键部署。
 
@@ -33,7 +54,7 @@ npm install
 npm run dev
 ```
 
-访问 http://localhost:4321 查看网站。
+访问 <http://localhost:4321> 查看网站。
 
 ### 构建生产版本
 
@@ -78,7 +99,7 @@ export default defineConfig({
 });
 ```
 
-2. 创建 `.github/workflows/deploy.yml` 文件：
+1. 创建 `.github/workflows/deploy.yml` 文件：
 
 ```yaml
 name: Deploy to GitHub Pages
@@ -103,11 +124,11 @@ jobs:
           publish_dir: ./dist
 ```
 
-3. 推送代码到GitHub，GitHub Actions将自动部署。
+1. 推送代码到GitHub，GitHub Actions将自动部署。
 
 ### Vercel
 
-1. 登录Vercel官网：https://vercel.com
+1. 登录Vercel官网：<https://vercel.com>
 2. 点击 "New Project"，选择你的GitHub仓库
 3. 配置构建命令：`npm run build`
 4. 配置输出目录：`dist`
