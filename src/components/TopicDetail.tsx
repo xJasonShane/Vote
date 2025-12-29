@@ -3,6 +3,7 @@ import { getTopic } from '../utils/dataManager';
 import { formatDate } from '../utils/helpers';
 import ContentItemList from './ContentItemList';
 import CommentSection from './CommentSection';
+import ErrorBoundary from './ErrorBoundary';
 import type { Topic } from '../types';
 
 const TopicDetail: React.FC = () => {
@@ -14,13 +15,13 @@ const TopicDetail: React.FC = () => {
     // 从URL参数中获取话题ID
     const urlParams = new URLSearchParams(window.location.search);
     const topicId = urlParams.get('id');
-    
+
     if (!topicId) {
       setError('话题ID不能为空');
       setLoading(false);
       return;
     }
-    
+
     try {
       const topicData = getTopic(topicId);
       if (topicData) {
@@ -49,8 +50,8 @@ const TopicDetail: React.FC = () => {
       <div className="bg-white p-8 rounded-lg shadow-md text-center">
         <h2 className="text-3xl font-bold mb-4">{error || '话题不存在'}</h2>
         <p className="text-gray-600 mb-4">您访问的话题可能已被删除或不存在。</p>
-        <a 
-          href="/topics" 
+        <a
+          href="/topics"
           className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
         >
           返回话题列表
@@ -60,34 +61,39 @@ const TopicDetail: React.FC = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <ErrorBoundary>
+      <div className="max-w-6xl mx-auto">
         <div className="bg-white p-8 rounded-lg shadow-md mb-8">
-            <h2 className="text-3xl font-bold mb-2">{topic.title}</h2>
-            <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-500">
-                <span>创建者: {topic.creator}</span>
-                <span>创建时间: {formatDate(topic.createdAt)}</span>
-                <span>更新时间: {formatDate(topic.updatedAt)}</span>
-            </div>
-            
-            <div className="flex flex-wrap gap-2 mb-4">
-                {topic.tags.map(tag => (
-                    <span key={tag} className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">
-                        {tag}
-                    </span>
-                ))}
-            </div>
-            
-            <div className="prose max-w-none mb-6">
-                <p>{topic.description}</p>
-            </div>
+          <h2 className="text-3xl font-bold mb-2">{topic.title}</h2>
+          <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-500">
+            <span>创建者: {topic.creator}</span>
+            <span>创建时间: {formatDate(topic.createdAt)}</span>
+            <span>更新时间: {formatDate(topic.updatedAt)}</span>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mb-4">
+            {topic.tags.map((tag) => (
+              <span
+                key={tag}
+                className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <div className="prose max-w-none mb-6">
+            <p>{topic.description}</p>
+          </div>
         </div>
-        
+
         {/* 内容项列表 */}
         <ContentItemList topic={topic} />
-        
+
         {/* 评论区 */}
         <CommentSection topic={topic} />
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 };
 

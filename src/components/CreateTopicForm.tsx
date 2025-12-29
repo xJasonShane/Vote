@@ -1,86 +1,92 @@
 import React, { useState } from 'react';
 import { createTopic } from '../utils/dataManager';
 
-const CreateTopicForm: React.FC = () => {
-  const [formData, setFormData] = useState({
+interface FormData {
+  title: string;
+  description: string;
+  creator: string;
+  tags: string;
+}
+
+function CreateTopicForm() {
+  const [formData, setFormData] = useState<FormData>({
     title: '',
     description: '',
     creator: '',
-    tags: ''
+    tags: '',
   });
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [generalError, setGeneralError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     // 清除对应字段的错误
-    if (errors[name]) {
-      setErrors(prev => {
+    if (errors[name as keyof FormData]) {
+      setErrors((prev) => {
         const newErrors = { ...prev };
-        delete newErrors[name];
+        delete newErrors[name as keyof FormData];
         return newErrors;
       });
     }
+    setGeneralError(null);
   };
 
-  const validateForm = () => {
-    const newErrors: { [key: string]: string } = {};
-    
+  const validateForm = (): boolean => {
+    const newErrors: Partial<FormData> = {};
+
     if (!formData.title.trim()) {
       newErrors.title = '标题不能为空';
     }
-    
+
     if (!formData.description.trim()) {
       newErrors.description = '描述不能为空';
     }
-    
+
     if (!formData.creator.trim()) {
       newErrors.creator = '创建者不能为空';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+    setGeneralError(null);
+
     try {
       // 处理标签，将字符串转换为数组
       const tagsArray = formData.tags
         .split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag !== '');
-      
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== '');
+
       // 创建话题
       createTopic({
         title: formData.title,
         description: formData.description,
         creator: formData.creator,
-        tags: tagsArray
+        tags: tagsArray,
       });
-      
-      // 重置表单
-      setFormData({
-        title: '',
-        description: '',
-        creator: '',
-        tags: ''
-      });
-      
+
       // 跳转到话题列表页面
       window.location.href = '/topics';
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : '创建话题失败，请稍后重试';
+      setGeneralError(errorMessage);
       console.error('创建话题失败:', error);
-      alert('创建话题失败，请稍后重试');
     } finally {
       setIsSubmitting(false);
     }
@@ -88,9 +94,18 @@ const CreateTopicForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {generalError && (
+        <div className="bg-red-100 text-red-700 p-3 rounded-md mb-4">
+          {generalError}
+        </div>
+      )}
+
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-          话题标题
+        <label
+          htmlFor="title"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          话题标题 *
         </label>
         <input
           type="text"
@@ -100,13 +115,24 @@ const CreateTopicForm: React.FC = () => {
           onChange={handleChange}
           className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.title ? 'border-red-500' : 'border-gray-300'}`}
           placeholder="请输入话题标题"
+          required
+          aria-required="true"
+          aria-invalid={!!errors.title}
+          aria-describedby={errors.title ? 'title-error' : undefined}
         />
-        {errors.title && <p className="mt-1 text-sm text-red-500">{errors.title}</p>}
+        {errors.title && (
+          <p id="title-error" className="mt-1 text-sm text-red-500">
+            {errors.title}
+          </p>
+        )}
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-          话题描述
+        <label
+          htmlFor="description"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          话题描述 *
         </label>
         <textarea
           id="description"
@@ -116,13 +142,26 @@ const CreateTopicForm: React.FC = () => {
           rows={4}
           className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
           placeholder="请输入话题描述"
+          required
+          aria-required="true"
+          aria-invalid={!!errors.description}
+          aria-describedby={
+            errors.description ? 'description-error' : undefined
+          }
         />
-        {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description}</p>}
+        {errors.description && (
+          <p id="description-error" className="mt-1 text-sm text-red-500">
+            {errors.description}
+          </p>
+        )}
       </div>
 
       <div>
-        <label htmlFor="creator" className="block text-sm font-medium text-gray-700 mb-1">
-          创建者
+        <label
+          htmlFor="creator"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          创建者 *
         </label>
         <input
           type="text"
@@ -132,13 +171,24 @@ const CreateTopicForm: React.FC = () => {
           onChange={handleChange}
           className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.creator ? 'border-red-500' : 'border-gray-300'}`}
           placeholder="请输入创建者名称"
+          required
+          aria-required="true"
+          aria-invalid={!!errors.creator}
+          aria-describedby={errors.creator ? 'creator-error' : undefined}
         />
-        {errors.creator && <p className="mt-1 text-sm text-red-500">{errors.creator}</p>}
+        {errors.creator && (
+          <p id="creator-error" className="mt-1 text-sm text-red-500">
+            {errors.creator}
+          </p>
+        )}
       </div>
 
       <div>
-        <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
-          标签（用逗号分隔）
+        <label
+          htmlFor="tags"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          标签（用逗号分隔，可选）
         </label>
         <input
           type="text"
@@ -148,26 +198,32 @@ const CreateTopicForm: React.FC = () => {
           onChange={handleChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="例如：电影,科幻,评分"
+          aria-describedby="tags-hint"
         />
+        <p id="tags-hint" className="mt-1 text-xs text-gray-500">
+          多个标签之间用逗号分隔
+        </p>
       </div>
 
-      <div className="flex justify-end space-x-4">
-        <a 
-          href="/topics" 
-          className="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors"
+      <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200">
+        <a
+          href="/topics"
+          className="px-6 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          aria-label="取消创建话题"
         >
           取消
         </a>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          aria-label="创建话题"
         >
           {isSubmitting ? '创建中...' : '创建话题'}
         </button>
       </div>
     </form>
   );
-};
+}
 
-export default CreateTopicForm;
+export default React.memo(CreateTopicForm);

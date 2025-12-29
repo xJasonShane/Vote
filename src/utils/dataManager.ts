@@ -7,7 +7,7 @@ const STORAGE_KEYS = {
   CONTENT_ITEMS: 'vote_rating_content_items',
   RATINGS: 'vote_rating_ratings',
   COMMENTS: 'vote_rating_comments',
-  REPLIES: 'vote_rating_replies'
+  REPLIES: 'vote_rating_replies',
 } as const;
 
 // 获取所有话题
@@ -23,11 +23,16 @@ export const getTopics = (): Topic[] => {
 // 获取单个话题
 export const getTopic = (id: string): Topic | undefined => {
   const topics = getTopics();
-  return topics.find(topic => topic.id === id);
+  return topics.find((topic) => topic.id === id);
 };
 
 // 创建话题
-export const createTopic = (topicData: Omit<Topic, 'id' | 'createdAt' | 'updatedAt' | 'contentItems' | 'ratings' | 'comments'>): Topic => {
+export const createTopic = (
+  topicData: Omit<
+    Topic,
+    'id' | 'createdAt' | 'updatedAt' | 'contentItems' | 'ratings' | 'comments'
+  >
+): Topic => {
   // 在服务器端渲染时，localStorage不存在，返回新话题但不保存
   if (typeof localStorage === 'undefined') {
     const now = new Date();
@@ -38,10 +43,10 @@ export const createTopic = (topicData: Omit<Topic, 'id' | 'createdAt' | 'updated
       updatedAt: now,
       contentItems: [],
       ratings: [],
-      comments: []
+      comments: [],
     };
   }
-  
+
   const topics = getTopics();
   const now = new Date();
   const newTopic: Topic = {
@@ -51,7 +56,7 @@ export const createTopic = (topicData: Omit<Topic, 'id' | 'createdAt' | 'updated
     updatedAt: now,
     contentItems: [],
     ratings: [],
-    comments: []
+    comments: [],
   };
   const updatedTopics = [...topics, newTopic];
   localStorage.setItem(STORAGE_KEYS.TOPICS, JSON.stringify(updatedTopics));
@@ -59,22 +64,27 @@ export const createTopic = (topicData: Omit<Topic, 'id' | 'createdAt' | 'updated
 };
 
 // 更新话题
-export const updateTopic = (id: string, topicData: Partial<Omit<Topic, 'id' | 'createdAt' | 'contentItems' | 'ratings' | 'comments'>>): Topic | undefined => {
+export const updateTopic = (
+  id: string,
+  topicData: Partial<
+    Omit<Topic, 'id' | 'createdAt' | 'contentItems' | 'ratings' | 'comments'>
+  >
+): Topic | undefined => {
   // 在服务器端渲染时，localStorage不存在，返回undefined
   if (typeof localStorage === 'undefined') {
     return undefined;
   }
-  
+
   const topics = getTopics();
-  const topicIndex = topics.findIndex(topic => topic.id === id);
+  const topicIndex = topics.findIndex((topic) => topic.id === id);
   if (topicIndex === -1) return undefined;
-  
+
   const updatedTopic = {
     ...topics[topicIndex],
     ...topicData,
-    updatedAt: new Date()
+    updatedAt: new Date(),
   };
-  
+
   topics[topicIndex] = updatedTopic;
   localStorage.setItem(STORAGE_KEYS.TOPICS, JSON.stringify(topics));
   return updatedTopic;
@@ -86,17 +96,23 @@ export const deleteTopic = (id: string): boolean => {
   if (typeof localStorage === 'undefined') {
     return false;
   }
-  
+
   const topics = getTopics();
-  const updatedTopics = topics.filter(topic => topic.id !== id);
+  const updatedTopics = topics.filter((topic) => topic.id !== id);
   if (updatedTopics.length === topics.length) return false;
-  
+
   localStorage.setItem(STORAGE_KEYS.TOPICS, JSON.stringify(updatedTopics));
   return true;
 };
 
 // 添加内容项到话题
-export const addContentItem = (topicId: string, contentItemData: Omit<ContentItem, 'id' | 'topicId' | 'createdAt' | 'updatedAt'>): ContentItem => {
+export const addContentItem = (
+  topicId: string,
+  contentItemData: Omit<
+    ContentItem,
+    'id' | 'topicId' | 'createdAt' | 'updatedAt'
+  >
+): ContentItem => {
   // 在服务器端渲染时，localStorage不存在，返回新内容项但不保存
   if (typeof localStorage === 'undefined') {
     const now = new Date();
@@ -105,34 +121,39 @@ export const addContentItem = (topicId: string, contentItemData: Omit<ContentIte
       id: generateId(),
       topicId,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
   }
-  
+
   const topics = getTopics();
-  const topicIndex = topics.findIndex(topic => topic.id === topicId);
+  const topicIndex = topics.findIndex((topic) => topic.id === topicId);
   if (topicIndex === -1) {
     throw new Error(`Topic with id ${topicId} not found`);
   }
-  
+
   const now = new Date();
   const newContentItem: ContentItem = {
     ...contentItemData,
     id: generateId(),
     topicId,
     createdAt: now,
-    updatedAt: now
+    updatedAt: now,
   };
-  
+
   topics[topicIndex].contentItems.push(newContentItem);
   topics[topicIndex].updatedAt = now;
-  
+
   localStorage.setItem(STORAGE_KEYS.TOPICS, JSON.stringify(topics));
   return newContentItem;
 };
 
 // 为内容项添加评分
-export const addRating = (topicId: string, contentItemId: string, score: number, dimensions?: { [key: string]: number }): Rating => {
+export const addRating = (
+  topicId: string,
+  contentItemId: string,
+  score: number,
+  dimensions?: { [key: string]: number }
+): Rating => {
   // 在服务器端渲染时，localStorage不存在，返回新评分但不保存
   if (typeof localStorage === 'undefined') {
     const now = new Date();
@@ -144,21 +165,23 @@ export const addRating = (topicId: string, contentItemId: string, score: number,
       userId,
       score,
       dimensions,
-      createdAt: now
+      createdAt: now,
     };
   }
-  
+
   const topics = getTopics();
-  const topicIndex = topics.findIndex(topic => topic.id === topicId);
+  const topicIndex = topics.findIndex((topic) => topic.id === topicId);
   if (topicIndex === -1) {
     throw new Error(`Topic with id ${topicId} not found`);
   }
-  
-  const contentItemIndex = topics[topicIndex].contentItems.findIndex(item => item.id === contentItemId);
+
+  const contentItemIndex = topics[topicIndex].contentItems.findIndex(
+    (item) => item.id === contentItemId
+  );
   if (contentItemIndex === -1) {
     throw new Error(`Content item with id ${contentItemId} not found`);
   }
-  
+
   const now = new Date();
   const userId = getRandomUserId();
   const newRating: Rating = {
@@ -168,18 +191,22 @@ export const addRating = (topicId: string, contentItemId: string, score: number,
     userId,
     score,
     dimensions,
-    createdAt: now
+    createdAt: now,
   };
-  
+
   topics[topicIndex].ratings.push(newRating);
   topics[topicIndex].updatedAt = now;
-  
+
   localStorage.setItem(STORAGE_KEYS.TOPICS, JSON.stringify(topics));
   return newRating;
 };
 
 // 添加评论
-export const addComment = (topicId: string, content: string, contentItemId?: string): Comment => {
+export const addComment = (
+  topicId: string,
+  content: string,
+  contentItemId?: string
+): Comment => {
   // 在服务器端渲染时，localStorage不存在，返回新评论但不保存
   if (typeof localStorage === 'undefined') {
     const now = new Date();
@@ -193,16 +220,16 @@ export const addComment = (topicId: string, content: string, contentItemId?: str
       replies: [],
       likes: 0,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
   }
-  
+
   const topics = getTopics();
-  const topicIndex = topics.findIndex(topic => topic.id === topicId);
+  const topicIndex = topics.findIndex((topic) => topic.id === topicId);
   if (topicIndex === -1) {
     throw new Error(`Topic with id ${topicId} not found`);
   }
-  
+
   const now = new Date();
   const userId = getRandomUserId();
   const newComment: Comment = {
@@ -214,18 +241,22 @@ export const addComment = (topicId: string, content: string, contentItemId?: str
     replies: [],
     likes: 0,
     createdAt: now,
-    updatedAt: now
+    updatedAt: now,
   };
-  
+
   topics[topicIndex].comments.push(newComment);
   topics[topicIndex].updatedAt = now;
-  
+
   localStorage.setItem(STORAGE_KEYS.TOPICS, JSON.stringify(topics));
   return newComment;
 };
 
 // 添加评论回复
-export const addReply = (topicId: string, commentId: string, content: string): Reply => {
+export const addReply = (
+  topicId: string,
+  commentId: string,
+  content: string
+): Reply => {
   // 在服务器端渲染时，localStorage不存在，返回新回复但不保存
   if (typeof localStorage === 'undefined') {
     const now = new Date();
@@ -237,21 +268,23 @@ export const addReply = (topicId: string, commentId: string, content: string): R
       content,
       likes: 0,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
   }
-  
+
   const topics = getTopics();
-  const topicIndex = topics.findIndex(topic => topic.id === topicId);
+  const topicIndex = topics.findIndex((topic) => topic.id === topicId);
   if (topicIndex === -1) {
     throw new Error(`Topic with id ${topicId} not found`);
   }
-  
-  const commentIndex = topics[topicIndex].comments.findIndex(comment => comment.id === commentId);
+
+  const commentIndex = topics[topicIndex].comments.findIndex(
+    (comment) => comment.id === commentId
+  );
   if (commentIndex === -1) {
     throw new Error(`Comment with id ${commentId} not found`);
   }
-  
+
   const now = new Date();
   const userId = getRandomUserId();
   const newReply: Reply = {
@@ -261,13 +294,13 @@ export const addReply = (topicId: string, commentId: string, content: string): R
     content,
     likes: 0,
     createdAt: now,
-    updatedAt: now
+    updatedAt: now,
   };
-  
+
   topics[topicIndex].comments[commentIndex].replies.push(newReply);
   topics[topicIndex].comments[commentIndex].updatedAt = now;
   topics[topicIndex].updatedAt = now;
-  
+
   localStorage.setItem(STORAGE_KEYS.TOPICS, JSON.stringify(topics));
   return newReply;
 };
@@ -278,18 +311,20 @@ export const likeComment = (topicId: string, commentId: string): boolean => {
   if (typeof localStorage === 'undefined') {
     return false;
   }
-  
+
   const topics = getTopics();
-  const topicIndex = topics.findIndex(topic => topic.id === topicId);
+  const topicIndex = topics.findIndex((topic) => topic.id === topicId);
   if (topicIndex === -1) return false;
-  
-  const commentIndex = topics[topicIndex].comments.findIndex(comment => comment.id === commentId);
+
+  const commentIndex = topics[topicIndex].comments.findIndex(
+    (comment) => comment.id === commentId
+  );
   if (commentIndex === -1) return false;
-  
+
   topics[topicIndex].comments[commentIndex].likes += 1;
   topics[topicIndex].comments[commentIndex].updatedAt = new Date();
   topics[topicIndex].updatedAt = new Date();
-  
+
   localStorage.setItem(STORAGE_KEYS.TOPICS, JSON.stringify(topics));
   return true;
 };

@@ -15,8 +15,8 @@ const Navigation: React.FC = () => {
           </a>
         </li>
         <li>
-          <a 
-            href="/create-topic" 
+          <a
+            href="/create-topic"
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
           >
             创建话题
