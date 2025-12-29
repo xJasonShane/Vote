@@ -3,7 +3,8 @@ import { getTopic } from '../utils/dataManager';
 import { formatDate } from '../utils/helpers';
 import ContentItemList from './ContentItemList';
 import CommentSection from './CommentSection';
-import ErrorBoundary from './ErrorBoundary';
+// ErrorBoundary 组件暂未实现，先留空占位
+const ErrorBoundary = ({ children }: { children: React.ReactNode }) => <>{children}</>;
 import type { Topic } from '../types';
 
 const TopicDetail: React.FC = () => {
