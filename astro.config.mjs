@@ -5,5 +5,5 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   integrations: [react(), tailwind()],
   output: 'static',
-  site: 'https://example.com',
+  site: 'https://yourusername.github.io/your-repo-name',
 });
