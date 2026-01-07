@@ -3,6 +3,7 @@ import { getTopic } from '../utils/dataManager';
 import { formatDate } from '../utils/helpers';
 import ContentItemList from './ContentItemList';
 import CommentSection from './CommentSection';
+import ShareComponent from './ShareComponent';
 // ErrorBoundary 组件暂未实现，先留空占位
 const ErrorBoundary = ({ children }: { children: React.ReactNode }) => <>{children}</>;
 import type { Topic } from '../types';
@@ -64,9 +65,9 @@ const TopicDetail: React.FC = () => {
   return (
     <ErrorBoundary>
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white p-8 rounded-lg shadow-md mb-8">
-          <h2 className="text-3xl font-bold mb-2">{topic.title}</h2>
-          <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-500">
+        <div className="bg-white p-8 rounded-lg shadow-md mb-8 dark:bg-gray-800 dark:text-white">
+          <h2 className="text-3xl font-bold mb-2 dark:text-white">{topic.title}</h2>
+          <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-500 dark:text-gray-400">
             <span>创建者: {topic.creator}</span>
             <span>创建时间: {formatDate(topic.createdAt)}</span>
             <span>更新时间: {formatDate(topic.updatedAt)}</span>
@@ -76,16 +77,22 @@ const TopicDetail: React.FC = () => {
             {topic.tags.map((tag) => (
               <span
                 key={tag}
-                className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm"
+                className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm dark:bg-gray-700 dark:text-gray-300"
               >
                 {tag}
               </span>
             ))}
           </div>
 
-          <div className="prose max-w-none mb-6">
+          <div className="prose max-w-none mb-6 dark:prose-invert">
             <p>{topic.description}</p>
           </div>
+
+          {/* 分享功能 */}
+          <ShareComponent 
+            topicTitle={topic.title} 
+            topicUrl={window.location.href} 
+          />
         </div>
 
         {/* 内容项列表 */}

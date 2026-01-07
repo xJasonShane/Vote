@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { createTopic } from '../utils/dataManager';
 
 interface FormData {
@@ -20,23 +20,21 @@ function CreateTopicForm() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
-  const handleChange = (
+  const handleChange = useCallback((
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     // 清除对应字段的错误
-    if (errors[name as keyof FormData]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name as keyof FormData];
-        return newErrors;
-      });
-    }
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[name as keyof FormData];
+      return newErrors;
+    });
     setGeneralError(null);
-  };
+  }, []);
 
-  const validateForm = (): boolean => {
+  const validateForm = useCallback((): boolean => {
     const newErrors: Partial<FormData> = {};
 
     if (!formData.title.trim()) {
@@ -53,9 +51,9 @@ function CreateTopicForm() {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [formData]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -90,7 +88,7 @@ function CreateTopicForm() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [formData, validateForm]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">

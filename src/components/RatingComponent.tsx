@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { addRating } from '../utils/dataManager';
 import type { ContentItem, Topic } from '../types';
 
@@ -18,12 +18,12 @@ function RatingComponent({
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleRatingChange = (newScore: number) => {
+  const handleRatingChange = useCallback((newScore: number) => {
     setScore(newScore);
     setError(null);
-  };
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (score === 0) {
@@ -51,7 +51,7 @@ function RatingComponent({
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [topic.id, contentItem.id, score, onRatingSuccess]);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
