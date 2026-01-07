@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface ShareComponentProps {
   topicTitle: string;
@@ -69,7 +69,7 @@ export default function ShareComponent({ topicTitle, topicUrl }: ShareComponentP
         </button>
 
         {/* 原生分享按钮（如果浏览器支持） */}
-        {navigator.share && (
+        {typeof navigator.share === 'function' && (
           <button
             onClick={handleShare}
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-700 dark:hover:bg-blue-800"

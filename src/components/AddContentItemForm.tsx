@@ -28,7 +28,6 @@ function AddContentItemForm({
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   // URL验证函数
   const validateUrl = useCallback((url: string): boolean => {
@@ -114,15 +113,6 @@ function AddContentItemForm({
   const handleCancel = useCallback(() => {
     onClose();
   }, [onClose]);
-
-  // 模态框拖拽效果处理
-  const handleDragStart = useCallback(() => {
-    setIsDragging(true);
-  }, []);
-
-  const handleDragEnd = useCallback(() => {
-    setIsDragging(false);
-  }, []);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
