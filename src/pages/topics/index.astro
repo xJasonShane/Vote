@@ -1,7 +1,7 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getTopics } from '../../utils/dataManager';
-import { formatDate } from '../../utils/helpers';
+import TopicList from '../../components/TopicList';
 
 const topics = getTopics();
 ---
@@ -9,57 +9,15 @@ const topics = getTopics();
 <MainLayout title="话题列表">
     <div class="max-w-6xl mx-auto">
         <div class="flex justify-between items-center mb-8">
-            <h2 class="text-3xl font-bold">话题列表</h2>
+            <h2 class="text-3xl font-bold dark:text-white">话题列表</h2>
             <a 
                 href="/create-topic" 
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors dark:bg-blue-700 dark:hover:bg-blue-800"
             >
                 创建新话题
             </a>
         </div>
 
-        {topics.length === 0 ? (
-            <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                <h3 class="text-xl font-semibold mb-2">暂无话题</h3>
-                <p class="text-gray-600 mb-4">成为第一个创建话题的人吧！</p>
-                <a 
-                    href="/create-topic" 
-                    class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-                >
-                    创建话题
-                </a>
-            </div>
-        ) : (
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {topics.map(topic => (
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                        <div class="flex justify-between items-start mb-3">
-                            <h3 class="text-xl font-semibold">
-                                <a href={`/topics/detail?id=${topic.id}`} class="hover:text-blue-600 transition-colors">
-                                    {topic.title}
-                                </a>
-                            </h3>
-                            <span class="text-sm text-gray-500">{formatDate(topic.createdAt)}</span>
-                        </div>
-                        <p class="text-gray-600 mb-4 line-clamp-2">{topic.description}</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            {topic.tags.map(tag => (
-                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>创建者: {topic.creator}</span>
-                            <div class="flex space-x-4">
-                                <span>{topic.contentItems.length} 个内容项</span>
-                                <span>{topic.ratings.length} 条评分</span>
-                                <span>{topic.comments.length} 条评论</span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        )}
+        <TopicList client:load initialTopics={topics} />
     </div>
 </MainLayout>

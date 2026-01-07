@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { addContentItem } from '../utils/dataManager';
 import type { Topic } from '../types';
 
@@ -29,7 +29,8 @@ function AddContentItemForm({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
-  const validateUrl = (url: string): boolean => {
+  // URL验证函数
+  const validateUrl = useCallback((url: string): boolean => {
     if (!url.trim()) return true; // 允许空URL
     try {
       new URL(url);
@@ -37,29 +38,37 @@ function AddContentItemForm({
     } catch {
       return false;
     }
-  };
+  }, []);
 
-  const handleChange = (
+  // 表单字段变化处理
+  const handleChange = useCallback((
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     // 清除对应字段的错误
-    if (errors[name as keyof FormData]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name as keyof FormData];
-        return newErrors;
-      });
-    }
+    setErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[name as keyof FormData];
+      return newErrors;
+    });
     setGeneralError(null);
-  };
+  }, []);
 
-  const validateForm = (): boolean => {
+  // 表单验证
+  const validateForm = useCallback((): boolean => {
     const newErrors: Partial<FormData> = {};
 
     if (!formData.title.trim()) {
       newErrors.title = '标题不能为空';
+    } else if (formData.title.length < 2) {
+      newErrors.title = '标题长度至少为2个字符';
+    } else if (formData.title.length > 100) {
+      newErrors.title = '标题长度不能超过100个字符';
+    }
+
+    if (formData.description.length > 500) {
+      newErrors.description = '描述长度不能超过500个字符';
     }
 
     if (formData.imageUrl.trim() && !validateUrl(formData.imageUrl)) {
@@ -68,9 +77,10 @@ function AddContentItemForm({
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [formData, validateUrl]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // 表单提交处理
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -97,11 +107,12 @@ function AddContentItemForm({
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [formData, topic.id, onSuccess, validateForm]);
 
-  const handleCancel = () => {
+  // 取消按钮处理
+  const handleCancel = useCallback(() => {
     onClose();
-  };
+  }, [onClose]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
