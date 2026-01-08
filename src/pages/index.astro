@@ -17,58 +17,76 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100 hover:border-blue-100">
-            <div class="bg-gradient-to-r from-blue-500 to-blue-700 w-14 h-14 rounded-full flex items-center justify-center mb-6 shadow-lg">
-                <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                </svg>
+        <div class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 p-8 border border-gray-100 hover:border-blue-200 relative overflow-hidden">
+            <!-- 装饰性背景元素 -->
+            <div class="absolute top-0 right-0 w-40 h-40 bg-blue-100 rounded-full -mr-20 -mt-20 opacity-30"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-blue-100 rounded-full -ml-16 -mb-16 opacity-20"></div>
+            
+            <div class="relative z-10">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-700 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg backdrop-blur-sm">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">创建话题</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    轻松发起一个新的话题，自定义评分规则和维度，让你的投票活动更加个性化。
+                </p>
+                <a href="/create-topic" class="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-1">
+                    <span>立即创建</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
             </div>
-            <h3 class="text-2xl font-bold mb-4 text-gray-800">创建话题</h3>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-                轻松发起一个新的话题，自定义评分规则和维度，让你的投票活动更加个性化。
-            </p>
-            <a href="/create-topic" class="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg">
-                <span>立即创建</span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </a>
         </div>
         
-        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100 hover:border-blue-100">
-            <div class="bg-gradient-to-r from-green-500 to-green-700 w-14 h-14 rounded-full flex items-center justify-center mb-6 shadow-lg">
-                <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                </svg>
+        <div class="bg-gradient-to-br from-white to-green-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 p-8 border border-gray-100 hover:border-green-200 relative overflow-hidden">
+            <!-- 装饰性背景元素 -->
+            <div class="absolute top-0 right-0 w-40 h-40 bg-green-100 rounded-full -mr-20 -mt-20 opacity-30"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-green-100 rounded-full -ml-16 -mb-16 opacity-20"></div>
+            
+            <div class="relative z-10">
+                <div class="bg-gradient-to-r from-green-500 to-green-700 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg backdrop-blur-sm">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">浏览话题</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    发现热门话题，参与评分和讨论，了解大家的看法和评价。
+                </p>
+                <a href="/topics" class="inline-flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-1">
+                    <span>浏览话题</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
-            <h3 class="text-2xl font-bold mb-4 text-gray-800">浏览话题</h3>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-                发现热门话题，参与评分和讨论，了解大家的看法和评价。
-            </p>
-            <a href="/topics" class="inline-flex items-center space-x-2 bg-gradient-to-r from-gray-600 to-gray-800 text-white px-6 py-3 rounded-lg hover:from-gray-700 hover:to-gray-900 transition-all duration-200 shadow-md hover:shadow-lg">
-                <span>浏览话题</span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </a>
         </div>
         
-        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 p-8 border border-gray-100 hover:border-blue-100">
-            <div class="bg-gradient-to-r from-purple-500 to-purple-700 w-14 h-14 rounded-full flex items-center justify-center mb-6 shadow-lg">
-                <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17 3H7c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7V5h10v14z" />
-                </svg>
+        <div class="bg-gradient-to-br from-white to-purple-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 p-8 border border-gray-100 hover:border-purple-200 relative overflow-hidden">
+            <!-- 装饰性背景元素 -->
+            <div class="absolute top-0 right-0 w-40 h-40 bg-purple-100 rounded-full -mr-20 -mt-20 opacity-30"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-100 rounded-full -ml-16 -mb-16 opacity-20"></div>
+            
+            <div class="relative z-10">
+                <div class="bg-gradient-to-r from-purple-500 to-purple-700 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg backdrop-blur-sm">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17 3H7c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7V5h10v14z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">我的评分</h3>
+                <p class="text-gray-600 mb-6 leading-relaxed">
+                    查看和管理我参与过的评分记录，追踪评分结果和变化趋势。
+                </p>
+                <a href="/topics" class="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-purple-800 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-purple-900 transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-1">
+                    <span>查看记录</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
-            <h3 class="text-2xl font-bold mb-4 text-gray-800">我的评分</h3>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-                查看和管理我参与过的评分记录，追踪评分结果和变化趋势。
-            </p>
-            <a href="/topics" class="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-purple-800 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-purple-900 transition-all duration-200 shadow-md hover:shadow-lg">
-                <span>查看记录</span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </a>
         </div>
     </div>
 </MainLayout>
