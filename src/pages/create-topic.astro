@@ -5,8 +5,11 @@ import CreateTopicForm from '../components/CreateTopicForm';
 
 <MainLayout title="创建话题">
     <div class="max-w-3xl mx-auto">
-        <div class="bg-white p-8 rounded-lg shadow-md">
-            <h2 class="text-3xl font-bold mb-6">创建新话题</h2>
+        <div class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg p-8 border border-blue-100">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2">创建新话题</h2>
+                <p class="text-gray-600">填写以下信息，创建一个新的话题供大家评分和讨论</p>
+            </div>
             <CreateTopicForm />
         </div>
     </div>

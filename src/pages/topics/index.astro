@@ -8,14 +8,19 @@ const topics = getTopics();
 
 <MainLayout title="话题列表">
     <div class="max-w-6xl mx-auto">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-3xl font-bold dark:text-white">话题列表</h2>
-            <a 
-                href="/create-topic" 
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors dark:bg-blue-700 dark:hover:bg-blue-800"
-            >
-                创建新话题
-            </a>
+        <div class="bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-md p-8 mb-8 border border-blue-100">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+                <div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2">话题列表</h2>
+                    <p class="text-gray-600">浏览、参与和创建话题，分享你的观点和评价</p>
+                </div>
+                <a 
+                    href="/create-topic" 
+                    class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-1 whitespace-nowrap"
+                >
+                    创建新话题
+                </a>
+            </div>
         </div>
 
         <TopicList client:load initialTopics={topics} />
