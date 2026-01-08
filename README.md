@@ -1,46 +1,28 @@
 # Vote - 投票评分网站
 
-<div align="center">
-  <a href="https://github.com/xJasonShane/Vote">
-    <img src="https://img.shields.io/badge/Astro-FF5D01?style=for-the-badge&logo=astro&logoColor=white" alt="Astro" />
-  </a>
-  <a href="https://github.com/xJasonShane/Vote">
-    <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
-  </a>
-  <a href="https://github.com/xJasonShane/Vote">
-    <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  </a>
-  <a href="https://github.com/xJasonShane/Vote">
-    <img src="https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-  </a>
-  <a href="https://github.com/xJasonShane/Vote/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License" />
-  </a>
-  <a href="https://github.com/xJasonShane/Vote/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/xJasonShane/Vote/deploy.yml?style=for-the-badge&label=Build" alt="Build Status" />
-  </a>
-</div>
+一个基于 Astro + React + Tailwind CSS 构建的现代化投票评分网站，支持创建话题、添加内容项、评分、评论等功能。
 
-一个基于Astro + React + Tailwind CSS构建的投票评分网站，支持GitHub Pages和Vercel一键部署。
+## ✨ 功能特性
 
-## 功能特性
+- 🚀 **快速创建话题** - 轻松发起新的投票评分活动
+- 🎯 **多维度评分** - 支持自定义评分规则和维度
+- 💬 **实时评论** - 支持评论和回复功能
+- 🔍 **智能搜索** - 实时搜索话题和内容
+- ⚖️ **灵活排序** - 支持多种排序方式
+- 🌓 **暗色模式** - 自动适配系统主题
+- 📱 **响应式设计** - 完美适配各种设备
+- 📤 **分享功能** - 支持多种分享方式
+- 💾 **本地存储** - 数据持久化保存
 
-- 🔧 **话题管理** - 创建、编辑、删除话题
-- 📝 **内容管理** - 在话题中添加角色/项目等自定义内容
-- ⭐ **评分系统** - 多维度评分与统计
-- 💬 **点评功能** - 文字点评与互动
-- 👤 **用户系统** - 匿名访问与可选登录
-- 📱 **响应式设计** - 适配移动端
-- 🚀 **一键部署** - 支持GitHub Pages和Vercel
+## 🛠️ 技术栈
 
-## 技术栈
-
-- **前端框架**: Astro + React
-- **样式框架**: Tailwind CSS
+- **框架**: Astro + React
+- **样式**: Tailwind CSS
 - **语言**: TypeScript
 - **构建工具**: Vite
+- **部署**: GitHub Pages / Vercel
 
-## 快速开始
+## 🚀 快速开始
 
 ### 安装依赖
 
@@ -48,13 +30,13 @@
 npm install
 ```
 
-### 开发模式
+### 启动开发服务器
 
 ```bash
 npm run dev
 ```
 
-访问 <http://localhost:4321> 查看网站。
+服务器将在 `http://localhost:4321` 启动
 
 ### 构建生产版本
 
@@ -62,86 +44,131 @@ npm run dev
 npm run build
 ```
 
+构建产物将输出到 `dist` 目录
+
 ### 预览生产版本
 
 ```bash
 npm run preview
 ```
 
-## 项目结构
+## 📁 项目结构
 
 ```
 ├── src/
-│   ├── components/          # React组件
-│   ├── layouts/             # 页面布局
+│   ├── components/          # React 组件
+│   │   ├── AddContentItemForm.tsx
+│   │   ├── CommentSection.tsx
+│   │   ├── ContentItemList.tsx
+│   │   ├── CreateTopicForm.tsx
+│   │   ├── DarkModeToggle.tsx
+│   │   ├── Navigation.tsx
+│   │   ├── RatingComponent.tsx
+│   │   ├── SearchBar.tsx
+│   │   ├── ShareComponent.tsx
+│   │   ├── TopicDetail.tsx
+│   │   └── TopicList.tsx
+│   ├── context/             # React Context 状态管理
+│   │   └── TopicContext.tsx
+│   ├── layouts/             # Astro 布局组件
+│   │   └── MainLayout.astro
 │   ├── pages/               # 页面组件
-│   ├── styles/              # 样式文件
-│   ├── utils/               # 工具函数
-│   └── types/               # TypeScript类型定义
-├── public/                  # 静态资源
-├── astro.config.mjs         # Astro配置
-├── tailwind.config.js       # Tailwind配置
-├── tsconfig.json            # TypeScript配置
-└── package.json             # 依赖管理
+│   │   ├── create-topic.astro
+│   │   ├── index.astro
+│   │   └── topics/
+│   │       ├── detail.astro
+│   │       └── index.astro
+│   ├── styles/              # 全局样式
+│   │   └── globals.css
+│   ├── types/               # TypeScript 类型定义
+│   │   └── index.ts
+│   └── utils/               # 工具函数
+│       ├── helpers.ts
+│       └── managers/        # 数据管理模块
+├── .github/workflows/       # GitHub Actions 工作流
+├── astro.config.mjs         # Astro 配置
+├── package.json             # 项目配置
+├── tailwind.config.js       # Tailwind CSS 配置
+└── tsconfig.json            # TypeScript 配置
 ```
 
-## 部署指南
+## 📖 使用说明
+
+### 创建话题
+
+1. 点击导航栏或首页的「创建新话题」按钮
+2. 填写话题标题、描述和标签
+3. 点击「创建话题」按钮
+
+### 添加内容项
+
+1. 进入话题详情页面
+2. 点击「添加内容项」按钮
+3. 填写内容项信息
+4. 点击「添加内容项」按钮
+
+### 评分
+
+1. 进入话题详情页面
+2. 找到要评分的内容项
+3. 点击评分星星进行评分
+4. 评分结果将实时显示
+
+### 评论
+
+1. 进入话题详情页面
+2. 滚动到底部评论区
+3. 输入评论内容
+4. 点击「提交评论」按钮
+
+### 搜索和排序
+
+1. 进入话题列表页面
+2. 在搜索框中输入关键词
+3. 使用排序下拉菜单选择排序方式
+
+## 📤 部署
 
 ### GitHub Pages
 
-1. 在 `astro.config.mjs` 中配置 `site` 和 `base`：
-
-```javascript
-export default defineConfig({
-  site: 'https://your-username.github.io',
-  base: '/your-repo-name',
-  // ...其他配置
-});
-```
-
-1. 创建 `.github/workflows/deploy.yml` 文件：
-
-```yaml
-name: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - run: npm install
-      - run: npm run build
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-```
-
-1. 推送代码到GitHub，GitHub Actions将自动部署。
+1. 确保项目根目录有 `.github/workflows/deploy.yml` 文件
+2. 推送代码到 GitHub 仓库
+3. GitHub Actions 将自动构建和部署
+4. 在仓库 Settings 中配置 GitHub Pages 源为 `gh-pages` 分支
 
 ### Vercel
 
-1. 登录Vercel官网：<https://vercel.com>
-2. 点击 "New Project"，选择你的GitHub仓库
-3. 配置构建命令：`npm run build`
-4. 配置输出目录：`dist`
-5. 点击 "Deploy" 完成部署
+1. 登录 Vercel
+2. 点击「Add New Project」
+3. 选择你的 GitHub 仓库
+4. 按照提示完成部署
 
-## 许可证
+## 🎨 自定义配置
 
-MIT License
+### 修改主题色
 
-## 贡献
+编辑 `tailwind.config.js` 文件中的 `theme.extend.colors` 部分
 
-欢迎提交Issue和Pull Request！
+### 添加新功能
 
-## 联系方式
+1. 在 `src/components/` 目录下创建新组件
+2. 在需要的页面中引入和使用组件
+3. 如果需要状态管理，可以使用已有的 `TopicContext` 或创建新的 Context
 
-如有问题，欢迎通过GitHub Issues反馈。
+## 📄 许可证
+
+MIT License - 详见 [LICENSE](LICENSE) 文件
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📧 联系方式
+
+如有问题或建议，欢迎通过以下方式联系：
+
+- GitHub Issues: [https://github.com/yourusername/Vote/issues](https://github.com/yourusername/Vote/issues)
+
+---
+
+**Vote** - 让投票评分变得简单有趣！
