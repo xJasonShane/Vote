@@ -1,23 +1,23 @@
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
   placeholder?: string;
 }
 
-export default function SearchBar({ onSearch, placeholder = '搜索话题...' }: SearchBarProps) {
+const SearchBar = React.memo(({ onSearch, placeholder = '搜索话题...' }: SearchBarProps) => {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
     onSearch(query);
-  };
+  }, [onSearch]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setSearchQuery('');
     onSearch('');
-  };
+  }, [onSearch]);
 
   return (
     <div className="relative mb-6">
@@ -46,4 +46,6 @@ export default function SearchBar({ onSearch, placeholder = '搜索话题...' }:
       )}
     </div>
   );
-}
+});
+
+export default SearchBar;

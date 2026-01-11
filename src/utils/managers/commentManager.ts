@@ -8,6 +8,7 @@ import { getStorageData, setStorageData, STORAGE_KEYS } from './storageManager';
 export const addComment = (
   topicId: string,
   content: string,
+  userId: string = getRandomUserId(),
   contentItemId?: string
 ): Comment => {
   const topics = getStorageData<Topic[]>(STORAGE_KEYS.TOPICS) || [];
@@ -17,7 +18,6 @@ export const addComment = (
   }
 
   const now = new Date();
-  const userId = getRandomUserId();
   const newComment: Comment = {
     id: generateId(),
     topicId,
@@ -37,27 +37,54 @@ export const addComment = (
   return newComment;
 };
 
+// 辅助函数：根据 commentId 找到对应的 topic 和 comment 索引
+const findTopicAndCommentByCommentId = (commentId: string) => {
+  const topics = getStorageData<Topic[]>(STORAGE_KEYS.TOPICS) || [];
+  
+  for (let topicIndex = 0; topicIndex < topics.length; topicIndex++) {
+    const commentIndex = topics[topicIndex].comments.findIndex(
+      (comment) => comment.id === commentId
+    );
+    if (commentIndex !== -1) {
+      return { topics, topicIndex, commentIndex };
+    }
+  }
+  
+  return { topics: null, topicIndex: -1, commentIndex: -1 };
+};
+
+// 辅助函数：根据 replyId 找到对应的 topic、comment 和 reply 索引
+const findTopicCommentAndReplyByReplyId = (replyId: string) => {
+  const topics = getStorageData<Topic[]>(STORAGE_KEYS.TOPICS) || [];
+  
+  for (let topicIndex = 0; topicIndex < topics.length; topicIndex++) {
+    for (let commentIndex = 0; commentIndex < topics[topicIndex].comments.length; commentIndex++) {
+      const replyIndex = topics[topicIndex].comments[commentIndex].replies.findIndex(
+        (reply) => reply.id === replyId
+      );
+      if (replyIndex !== -1) {
+        return { topics, topicIndex, commentIndex, replyIndex };
+      }
+    }
+  }
+  
+  return { topics: null, topicIndex: -1, commentIndex: -1, replyIndex: -1 };
+};
+
 // 添加评论回复
 export const addReply = (
-  topicId: string,
   commentId: string,
-  content: string
+  parentReplyId: string,
+  content: string,
+  userId: string = getRandomUserId()
 ): Reply => {
-  const topics = getStorageData<Topic[]>(STORAGE_KEYS.TOPICS) || [];
-  const topicIndex = topics.findIndex((topic) => topic.id === topicId);
-  if (topicIndex === -1) {
-    throw new Error(`Topic with id ${topicId} not found`);
-  }
-
-  const commentIndex = topics[topicIndex].comments.findIndex(
-    (comment) => comment.id === commentId
-  );
-  if (commentIndex === -1) {
+  const { topics, topicIndex, commentIndex } = findTopicAndCommentByCommentId(commentId);
+  
+  if (!topics || topicIndex === -1 || commentIndex === -1) {
     throw new Error(`Comment with id ${commentId} not found`);
   }
 
   const now = new Date();
-  const userId = getRandomUserId();
   const newReply: Reply = {
     id: generateId(),
     commentId,
@@ -77,15 +104,10 @@ export const addReply = (
 };
 
 // 点赞评论
-export const likeComment = (topicId: string, commentId: string): boolean => {
-  const topics = getStorageData<Topic[]>(STORAGE_KEYS.TOPICS) || [];
-  const topicIndex = topics.findIndex((topic) => topic.id === topicId);
-  if (topicIndex === -1) return false;
-
-  const commentIndex = topics[topicIndex].comments.findIndex(
-    (comment) => comment.id === commentId
-  );
-  if (commentIndex === -1) return false;
+export const likeComment = (commentId: string): boolean => {
+  const { topics, topicIndex, commentIndex } = findTopicAndCommentByCommentId(commentId);
+  
+  if (!topics || topicIndex === -1 || commentIndex === -1) return false;
 
   topics[topicIndex].comments[commentIndex].likes += 1;
   topics[topicIndex].comments[commentIndex].updatedAt = new Date();
@@ -96,20 +118,10 @@ export const likeComment = (topicId: string, commentId: string): boolean => {
 };
 
 // 点赞回复
-export const likeReply = (topicId: string, commentId: string, replyId: string): boolean => {
-  const topics = getStorageData<Topic[]>(STORAGE_KEYS.TOPICS) || [];
-  const topicIndex = topics.findIndex((topic) => topic.id === topicId);
-  if (topicIndex === -1) return false;
-
-  const commentIndex = topics[topicIndex].comments.findIndex(
-    (comment) => comment.id === commentId
-  );
-  if (commentIndex === -1) return false;
-
-  const replyIndex = topics[topicIndex].comments[commentIndex].replies.findIndex(
-    (reply) => reply.id === replyId
-  );
-  if (replyIndex === -1) return false;
+export const likeReply = (replyId: string): boolean => {
+  const { topics, topicIndex, commentIndex, replyIndex } = findTopicCommentAndReplyByReplyId(replyId);
+  
+  if (!topics || topicIndex === -1 || commentIndex === -1 || replyIndex === -1) return false;
 
   topics[topicIndex].comments[commentIndex].replies[replyIndex].likes += 1;
   topics[topicIndex].comments[commentIndex].replies[replyIndex].updatedAt = new Date();

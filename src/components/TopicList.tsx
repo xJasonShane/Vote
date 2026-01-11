@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { Topic } from '../types';
 import { formatDate } from '../utils/helpers';
 import SearchBar from './SearchBar';
+import { SkeletonLoader } from './Skeleton';
 
 type SortOption = 'latest' | 'oldest' | 'mostContent' | 'mostRatings' | 'mostComments';
 
@@ -9,33 +10,12 @@ interface TopicListProps {
   initialTopics: Topic[];
 }
 
-export default function TopicList({ initialTopics }: TopicListProps) {
+const TopicList = React.memo(({ initialTopics }: TopicListProps) => {
   const [topics, setTopics] = useState<Topic[]>(initialTopics);
   const [filteredTopics, setFilteredTopics] = useState<Topic[]>(initialTopics);
   const [sortOption, setSortOption] = useState<SortOption>('latest');
 
-  useEffect(() => {
-    setTopics(initialTopics);
-    sortTopics(initialTopics, sortOption);
-  }, [initialTopics, sortOption]);
-
-  const handleSearch = (query: string) => {
-    if (!query.trim()) {
-      sortTopics(topics, sortOption);
-      return;
-    }
-
-    const lowercaseQuery = query.toLowerCase();
-    const filtered = topics.filter(topic => 
-      topic.title.toLowerCase().includes(lowercaseQuery) ||
-      topic.description.toLowerCase().includes(lowercaseQuery) ||
-      topic.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery)) ||
-      topic.creator.toLowerCase().includes(lowercaseQuery)
-    );
-    sortTopics(filtered, sortOption);
-  };
-
-  const sortTopics = (topicsToSort: Topic[], option: SortOption) => {
+  const sortTopics = useCallback((topicsToSort: Topic[], option: SortOption) => {
     let sorted = [...topicsToSort];
     
     switch (option) {
@@ -57,13 +37,34 @@ export default function TopicList({ initialTopics }: TopicListProps) {
     }
     
     setFilteredTopics(sorted);
-  };
+  }, []);
 
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSearch = useCallback((query: string) => {
+    if (!query.trim()) {
+      sortTopics(topics, sortOption);
+      return;
+    }
+
+    const lowercaseQuery = query.toLowerCase();
+    const filtered = topics.filter(topic => 
+      topic.title.toLowerCase().includes(lowercaseQuery) ||
+      topic.description.toLowerCase().includes(lowercaseQuery) ||
+      topic.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery)) ||
+      topic.creator.toLowerCase().includes(lowercaseQuery)
+    );
+    sortTopics(filtered, sortOption);
+  }, [topics, sortOption, sortTopics]);
+
+  const handleSortChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     const option = e.target.value as SortOption;
     setSortOption(option);
     sortTopics(filteredTopics, option);
-  };
+  }, [filteredTopics, sortTopics]);
+
+  useEffect(() => {
+    setTopics(initialTopics);
+    sortTopics(initialTopics, sortOption);
+  }, [initialTopics, sortOption, sortTopics]);
 
   return (
     <div>
@@ -173,4 +174,6 @@ export default function TopicList({ initialTopics }: TopicListProps) {
       )}
     </div>
   );
-}
+});
+
+export default TopicList;

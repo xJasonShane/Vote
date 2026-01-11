@@ -2,6 +2,7 @@
 
 import React, { type ReactNode } from 'react';
 import { TopicProvider } from '../context/TopicContext';
+import { UserProvider } from '../context/UserContext';
 
 interface AppProviderProps {
   children: ReactNode;
@@ -10,9 +11,11 @@ interface AppProviderProps {
 // 应用根 Provider，整合所有 Context
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
-    <TopicProvider>
-      {children}
-    </TopicProvider>
+    <UserProvider>
+      <TopicProvider>
+        {children}
+      </TopicProvider>
+    </UserProvider>
   );
 };
 

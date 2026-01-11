@@ -1,17 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { getTopic } from '../utils/dataManager';
+import React, { useEffect, useState, useCallback } from 'react';
+import { getTopic, getCurrentUser, addFavorite, removeFavorite, isTopicFavorited } from '../utils/dataManager';
 import { formatDate } from '../utils/helpers';
 import ContentItemList from './ContentItemList';
 import CommentSection from './CommentSection';
 import ShareComponent from './ShareComponent';
+import { SkeletonLoader } from './Skeleton';
 // ErrorBoundary 组件暂未实现，先留空占位
 const ErrorBoundary = ({ children }: { children: React.ReactNode }) => <>{children}</>;
-import type { Topic } from '../types';
+import type { Topic, User } from '../types';
 
 const TopicDetail: React.FC = () => {
   const [topic, setTopic] = useState<Topic | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [userLoading, setUserLoading] = useState(true);
+
+  // 获取当前用户和检查收藏状态
+  useEffect(() => {
+    const fetchUserData = () => {
+      try {
+        const user = getCurrentUser();
+        setCurrentUser(user);
+      } catch (err) {
+        console.error('获取用户数据失败:', err);
+      } finally {
+        setUserLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  // 检查话题是否被收藏
+  useEffect(() => {
+    if (topic && currentUser) {
+      const favorited = isTopicFavorited(currentUser.id, topic.id);
+      setIsFavorited(favorited);
+    }
+  }, [topic, currentUser]);
 
   useEffect(() => {
     // 从URL参数中获取话题ID
@@ -39,12 +67,24 @@ const TopicDetail: React.FC = () => {
     }
   }, []);
 
+  // 处理收藏/取消收藏
+  const handleToggleFavorite = useCallback(() => {
+    if (!currentUser || !topic) return;
+
+    try {
+      if (isFavorited) {
+        removeFavorite(currentUser.id, topic.id);
+      } else {
+        addFavorite(currentUser.id, topic.id);
+      }
+      setIsFavorited(!isFavorited);
+    } catch (err) {
+      console.error('处理收藏失败:', err);
+    }
+  }, [currentUser, topic, isFavorited]);
+
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-xl font-medium">加载中...</div>
-      </div>
-    );
+    return <SkeletonLoader.TopicDetail />;
   }
 
   if (error || !topic) {
@@ -88,11 +128,46 @@ const TopicDetail: React.FC = () => {
             <p>{topic.description}</p>
           </div>
 
-          {/* 分享功能 */}
-          <ShareComponent 
-            topicTitle={topic.title} 
-            topicUrl={window.location.href} 
-          />
+          <div className="flex flex-wrap items-center gap-4 mb-6">
+            {/* 收藏功能 */}
+            {currentUser ? (
+              <button
+                onClick={handleToggleFavorite}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  isFavorited 
+                    ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500' 
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
+                }`}
+                aria-label={isFavorited ? '取消收藏' : '收藏话题'}
+              >
+                <svg 
+                  className="w-5 h-5" 
+                  fill="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <span>{isFavorited ? '已收藏' : '收藏'}</span>
+              </button>
+            ) : (
+              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <svg 
+                  className="w-5 h-5" 
+                  fill="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <span>登录后可收藏</span>
+              </div>
+            )}
+
+            {/* 分享功能 */}
+            <ShareComponent 
+              topicTitle={topic.title} 
+              topicUrl={window.location.href} 
+            />
+          </div>
         </div>
 
         {/* 内容项列表 */}

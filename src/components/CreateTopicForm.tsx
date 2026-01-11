@@ -9,6 +9,14 @@ interface FormData {
 }
 
 function CreateTopicForm() {
+  // 从 localStorage 获取当前用户
+  const getCurrentUser = () => {
+    if (typeof window === 'undefined') return null;
+    
+    const savedUser = localStorage.getItem('vote_rating_current_user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  };
+  
   const [formData, setFormData] = useState<FormData>({
     title: '',
     description: '',
@@ -36,6 +44,7 @@ function CreateTopicForm() {
 
   const validateForm = useCallback((): boolean => {
     const newErrors: Partial<FormData> = {};
+    const currentUser = getCurrentUser();
 
     if (!formData.title.trim()) {
       newErrors.title = '标题不能为空';
@@ -45,8 +54,9 @@ function CreateTopicForm() {
       newErrors.description = '描述不能为空';
     }
 
-    if (!formData.creator.trim()) {
-      newErrors.creator = '创建者不能为空';
+    if (!currentUser) {
+      setGeneralError('请先登录再创建话题');
+      return false;
     }
 
     setErrors(newErrors);
@@ -64,6 +74,11 @@ function CreateTopicForm() {
     setGeneralError(null);
 
     try {
+      const currentUser = getCurrentUser();
+      if (!currentUser) {
+        throw new Error('请先登录再创建话题');
+      }
+      
       // 处理标签，将字符串转换为数组
       const tagsArray = formData.tags
         .split(',')
@@ -74,7 +89,7 @@ function CreateTopicForm() {
       createTopic({
         title: formData.title,
         description: formData.description,
-        creator: formData.creator,
+        creator: currentUser.username,
         tags: tagsArray,
       });
 
@@ -89,6 +104,8 @@ function CreateTopicForm() {
       setIsSubmitting(false);
     }
   }, [formData, validateForm]);
+
+  const currentUser = getCurrentUser();
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -154,32 +171,13 @@ function CreateTopicForm() {
         )}
       </div>
 
-      <div>
-        <label
-          htmlFor="creator"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          创建者 *
-        </label>
-        <input
-          type="text"
-          id="creator"
-          name="creator"
-          value={formData.creator}
-          onChange={handleChange}
-          className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent ${errors.creator ? 'border-red-500' : 'border-gray-300'}`}
-          placeholder="请输入创建者名称"
-          required
-          aria-required="true"
-          aria-invalid={!!errors.creator}
-          aria-describedby={errors.creator ? 'creator-error' : undefined}
-        />
-        {errors.creator && (
-          <p id="creator-error" className="mt-1 text-sm text-red-500">
-            {errors.creator}
+      {currentUser && (
+        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md">
+          <p className="text-sm text-blue-700 dark:text-blue-300">
+            当前用户：<span className="font-medium">{currentUser.username}</span>
           </p>
-        )}
-      </div>
+        </div>
+      )}
 
       <div>
         <label

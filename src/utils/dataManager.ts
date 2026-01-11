@@ -5,3 +5,4 @@ export * from './managers/topicManager';
 export * from './managers/contentItemManager';
 export * from './managers/ratingManager';
 export * from './managers/commentManager';
+export * from './managers/userManager';
