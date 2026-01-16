@@ -1,0 +1,1 @@
+const r=()=>Math.random().toString(36).substring(2,15)+Math.random().toString(36).substring(2,15),n=t=>new Date(t).toLocaleString("zh-CN",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});export{n as f,r as g};
