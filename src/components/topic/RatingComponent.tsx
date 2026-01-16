@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { addRating } from '../utils/dataManager';
-import type { ContentItem, Topic } from '../types';
+import { addRating } from '../../utils/dataManager';
+import type { ContentItem, Topic } from '../../types';
 import RatingStatsComponent from './RatingStatsComponent';
 
 interface RatingComponentProps {

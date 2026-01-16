@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { getTopic, getCurrentUser, addFavorite, removeFavorite, isTopicFavorited } from '../utils/dataManager';
-import { formatDate } from '../utils/helpers';
+import { getTopic, getCurrentUser, addFavorite, removeFavorite, isTopicFavorited } from '../../utils/dataManager';
+import { formatDate } from '../../utils/helpers';
 import ContentItemList from './ContentItemList';
 import CommentSection from './CommentSection';
-import ShareComponent from './ShareComponent';
-import { SkeletonLoader } from './Skeleton';
+import ShareComponent from '../shared/ShareComponent';
+import { SkeletonLoader } from '../shared/Skeleton';
 // ErrorBoundary 组件暂未实现，先留空占位
 const ErrorBoundary = ({ children }: { children: React.ReactNode }) => <>{children}</>;
-import type { Topic, User } from '../types';
+import type { Topic, User } from '../../types';
 
 const TopicDetail: React.FC = () => {
   const [topic, setTopic] = useState<Topic | null>(null);

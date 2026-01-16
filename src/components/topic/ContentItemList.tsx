@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import RatingComponent from './RatingComponent';
-import AddContentItemForm from './AddContentItemForm';
-import type { Topic, ContentItem } from '../types';
-import { calculateAverageRating } from '../utils/helpers';
-import { getTopic } from '../utils/dataManager';
+import AddContentItemForm from '../forms/AddContentItemForm';
+import type { Topic, ContentItem } from '../../types';
+import { calculateAverageRating } from '../../utils/helpers';
+import { getTopic } from '../../utils/dataManager';
 
 interface ContentItemListProps {
   topic: Topic;

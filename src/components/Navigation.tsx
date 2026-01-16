@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import DarkModeToggle from './DarkModeToggle';
-import UserAuth from './UserAuth';
+import DarkModeToggle from './ui/DarkModeToggle';
+import UserAuth from './ui/UserAuth';
 
 const Navigation: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
