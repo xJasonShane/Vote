@@ -5,8 +5,7 @@ import ContentItemList from './ContentItemList';
 import CommentSection from './CommentSection';
 import ShareComponent from '../shared/ShareComponent';
 import { SkeletonLoader } from '../shared/Skeleton';
-// ErrorBoundary 组件暂未实现，先留空占位
-const ErrorBoundary = ({ children }: { children: React.ReactNode }) => <>{children}</>;
+import ErrorBoundary from '../app/ErrorBoundary';
 import type { Topic, User } from '../../types';
 
 const TopicDetail: React.FC = () => {
@@ -15,7 +14,6 @@ const TopicDetail: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isFavorited, setIsFavorited] = useState(false);
-  const [userLoading, setUserLoading] = useState(true);
 
   // 获取当前用户和检查收藏状态
   useEffect(() => {
@@ -25,8 +23,6 @@ const TopicDetail: React.FC = () => {
         setCurrentUser(user);
       } catch (err) {
         console.error('获取用户数据失败:', err);
-      } finally {
-        setUserLoading(false);
       }
     };
 

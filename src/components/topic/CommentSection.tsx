@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { addComment, getTopic, addReply, likeComment, likeReply } from '../utils/dataManager';
-import type { Topic, Comment, Reply } from '../types';
-import { formatDate } from '../utils/helpers';
+import { addComment, getTopic, addReply, likeComment, likeReply } from '../../utils/dataManager';
+import type { Topic, Comment, Reply } from '../../types';
+import { formatDate } from '../../utils/helpers';
 
 interface CommentSectionProps {
   topic: Topic;

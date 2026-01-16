@@ -1,6 +1,6 @@
 // 用户管理器 - 处理用户数据的存储和检索
 
-import { getStorageData, setStorageData, STORAGE_KEYS } from './storageManager';
+import { getStorageData, setStorageData } from './storageManager';
 import type { User } from '../../types';
 
 // 更新存储键，添加用户相关的键

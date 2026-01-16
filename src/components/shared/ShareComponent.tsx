@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 interface ShareComponentProps {
   topicTitle: string;
@@ -80,7 +80,7 @@ export default function ShareComponent({ topicTitle, topicUrl }: ShareComponentP
     // 使用简单的 QR 码生成算法（基于文本编码）
     // 实际项目中可以使用更复杂的 QR 码生成库
     const size = 200;
-    const margin = 10;
+
     const data = encodeURIComponent(topicUrl);
     
     // 使用 Google Charts API 生成 QR 码（简单实现）

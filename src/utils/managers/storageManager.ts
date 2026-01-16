@@ -21,7 +21,7 @@ interface CacheItem {
 const isStorageAvailable = (): boolean => {
   try {
     return typeof localStorage !== 'undefined';
-  } catch (_error) {
+  } catch {
     return false;
   }
 };
@@ -142,9 +142,9 @@ export const getStorageDataBatch = <T extends Record<string, any>>(keys: Array<k
   const result: Partial<T> = {};
   
   keys.forEach(key => {
-    const data = getStorageData(key as string);
+    const data = getStorageData<T[keyof T]>(key as string);
     if (data !== null) {
-      result[key] = data;
+      result[key] = data as T[keyof T];
     }
   });
   

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { addContentItem } from '../utils/dataManager';
-import type { Topic } from '../types';
+import { addContentItem } from '../../utils/dataManager';
+import type { Topic } from '../../types';
 
 interface FormData {
   title: string;

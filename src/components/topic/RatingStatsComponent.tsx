@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
-import type { ContentItem, Topic } from '../types';
+import { useCallback, useMemo } from 'react';
+import type { ContentItem, Topic } from '../../types';
 
 interface RatingStatsComponentProps {
   topic: Topic;

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import type { Topic } from '../../types';
 import { formatDate } from '../../utils/helpers';
 import SearchBar from '../shared/SearchBar';
-import { SkeletonLoader } from '../shared/Skeleton';
 
 type SortOption = 'latest' | 'oldest' | 'mostContent' | 'mostRatings' | 'mostComments';
 

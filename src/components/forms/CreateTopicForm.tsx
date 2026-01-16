@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { createTopic } from '../utils/dataManager';
+import { createTopic } from '../../utils/dataManager';
 
 interface FormData {
   title: string;

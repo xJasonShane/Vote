@@ -74,7 +74,6 @@ const findTopicCommentAndReplyByReplyId = (replyId: string) => {
 // 添加评论回复
 export const addReply = (
   commentId: string,
-  parentReplyId: string,
   content: string,
   userId: string = getRandomUserId()
 ): Reply => {
