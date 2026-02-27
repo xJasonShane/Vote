@@ -20,7 +20,7 @@ export const getCurrentUser = (): User | null => {
 };
 
 // 设置当前用户
-export const setCurrentUser = (user: User): boolean => {
+export const setCurrentUser = (user: User | null): boolean => {
   return setStorageData(USER_STORAGE_KEYS.CURRENT_USER, user);
 };
 

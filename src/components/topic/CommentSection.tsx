@@ -39,7 +39,7 @@ const ReplyComponent = ({
     if (!trimmedContent) return;
     
     try {
-      addReply(commentId, reply.id, trimmedContent);
+      addReply(commentId, trimmedContent);
       setReplyContent('');
       setIsReplying(false);
       setReplyingTo(null);
@@ -47,7 +47,7 @@ const ReplyComponent = ({
     } catch (error) {
       console.error('回复失败:', error);
     }
-  }, [commentId, reply.id, replyContent, onReplyAdded]);
+  }, [commentId, replyContent, onReplyAdded]);
   
   const handleLike = useCallback(() => {
     try {
@@ -326,7 +326,8 @@ function CommentSection({
     setError(null);
 
     try {
-      addComment(topic.id, trimmedContent, getCurrentUser());
+      const currentUser = getCurrentUser();
+      addComment(topic.id, trimmedContent, currentUser);
       setCommentContent('');
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);

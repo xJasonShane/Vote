@@ -1,10 +1,11 @@
 // 评分管理器 - 处理评分相关的数据操作
 
-import { generateId, getRandomUserId } from '../helpers';
+import { generateId } from '../helpers';
 import type { Topic, Rating } from '../../types';
 import { getStorageData, setStorageData, STORAGE_KEYS } from './storageManager';
+import { getCurrentUser } from './userManager';
 
-// 为内容项添加评分
+// 为内容项添加评分（带用户验证和防重复）
 export const addRating = (
   topicId: string,
   contentItemId: string,
@@ -24,13 +25,37 @@ export const addRating = (
     throw new Error(`Content item with id ${contentItemId} not found`);
   }
 
+  // 获取当前用户
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    throw new Error('请先登录后再评分');
+  }
+
+  // 检查是否已评分
+  const existingRatingIndex = topics[topicIndex].ratings.findIndex(
+    (rating) => rating.contentItemId === contentItemId && rating.userId === currentUser.id
+  );
+
   const now = new Date();
-  const userId = getRandomUserId();
+  
+  if (existingRatingIndex !== -1) {
+    // 更新已有评分
+    topics[topicIndex].ratings[existingRatingIndex] = {
+      ...topics[topicIndex].ratings[existingRatingIndex],
+      score,
+      dimensions,
+    };
+    topics[topicIndex].updatedAt = now;
+    setStorageData(STORAGE_KEYS.TOPICS, topics);
+    return topics[topicIndex].ratings[existingRatingIndex];
+  }
+
+  // 创建新评分
   const newRating: Rating = {
     id: generateId(),
     topicId,
     contentItemId,
-    userId,
+    userId: currentUser.id,
     score,
     dimensions,
     createdAt: now,
@@ -70,4 +95,15 @@ export const getUserRating = (
   return topic.ratings.find(
     (rating) => rating.contentItemId === contentItemId && rating.userId === userId
   );
+};
+
+// 获取当前用户对内容项的评分
+export const getCurrentUserRating = (
+  topicId: string,
+  contentItemId: string
+): Rating | undefined => {
+  const currentUser = getCurrentUser();
+  if (!currentUser) return undefined;
+  
+  return getUserRating(topicId, contentItemId, currentUser.id);
 };

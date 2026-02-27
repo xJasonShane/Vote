@@ -2,7 +2,7 @@
 
 import React, { createContext, useState, useEffect, useContext, type ReactNode } from 'react';
 import type { User } from '../types';
-import { getCurrentUser, setCurrentUser, createUser, updateUser } from '../utils/managers/userManager';
+import { getCurrentUser, createUser, updateUser, clearCurrentUser } from '../utils/managers/userManager';
 
 interface UserContextType {
   user: User | null;
@@ -60,7 +60,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   // 清除用户
   const handleClearUser = () => {
     setUser(null);
-    setCurrentUser(null as any); // 清除存储中的当前用户
+    clearCurrentUser();
   };
 
   // 初始加载
