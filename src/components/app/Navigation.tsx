@@ -7,11 +7,10 @@ const Navigation: React.FC = () => {
 
   return (
     <nav className="w-full">
-      {/* 移动设备菜单按钮 */}
       <div className="md:hidden">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="btn-icon text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
           aria-label={isMenuOpen ? '关闭菜单' : '打开菜单'}
           aria-expanded={isMenuOpen}
         >
@@ -40,13 +39,12 @@ const Navigation: React.FC = () => {
         </button>
       </div>
 
-      {/* 桌面设备导航 */}
-      <ul className="hidden md:flex items-center justify-between space-x-8 text-base font-medium">
-        <div className="flex items-center space-x-8">
+      <ul className="hidden md:flex items-center justify-between space-x-2 text-base font-medium">
+        <div className="flex items-center space-x-2">
           <li>
             <a 
               href="/" 
-              className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 px-2 py-1 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30"
+              className="nav-link"
               aria-label="首页"
             >
               首页
@@ -55,7 +53,7 @@ const Navigation: React.FC = () => {
           <li>
             <a 
               href="/topics" 
-              className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 px-2 py-1 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/30"
+              className="nav-link"
               aria-label="话题列表"
             >
               话题
@@ -64,15 +62,18 @@ const Navigation: React.FC = () => {
           <li>
             <a
               href="/create-topic"
-              className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 text-white px-5 py-2.5 rounded-lg hover:from-blue-700 hover:to-blue-800 dark:hover:from-blue-800 dark:hover:to-blue-900 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="btn btn-primary text-sm px-5 py-2.5"
               aria-label="创建新话题"
             >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
               创建话题
             </a>
           </li>
         </div>
         
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-3">
           <li>
             <DarkModeToggle />
           </li>
@@ -82,35 +83,44 @@ const Navigation: React.FC = () => {
         </div>
       </ul>
 
-      {/* 移动设备导航菜单 */}
       {isMenuOpen && (
-        <div className="md:hidden mt-4">
-          <div className="flex flex-col space-y-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="md:hidden mt-4 animate-fade-in-down">
+          <div className="glass-card p-6 space-y-4">
             <a
               href="/"
-              className="block py-2 px-4 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors duration-200"
+              className="block nav-link"
               aria-label="首页"
               onClick={() => setIsMenuOpen(false)}
             >
+              <svg className="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
               首页
             </a>
             <a
               href="/topics"
-              className="block py-2 px-4 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors duration-200"
+              className="block nav-link"
               aria-label="话题列表"
               onClick={() => setIsMenuOpen(false)}
             >
+              <svg className="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
               话题
             </a>
             <a
               href="/create-topic"
-              className="block py-2 px-4 rounded-md bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 text-white text-center hover:from-blue-700 hover:to-blue-800 dark:hover:from-blue-800 dark:hover:to-blue-900 transition-all duration-200 shadow-md"
+              className="btn btn-primary w-full justify-center"
               aria-label="创建新话题"
               onClick={() => setIsMenuOpen(false)}
             >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
               创建话题
             </a>
-            <div className="flex items-center justify-between py-2 px-4 border-t border-gray-200 dark:border-gray-700 mt-2">
+            <div className="divider"></div>
+            <div className="flex items-center justify-between">
               <DarkModeToggle />
               <UserAuth />
             </div>

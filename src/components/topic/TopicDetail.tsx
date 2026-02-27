@@ -175,13 +175,21 @@ const TopicDetail: React.FC = () => {
 
   if (error || !topic) {
     return (
-      <div className="bg-white p-8 rounded-lg shadow-md text-center dark:bg-gray-800">
-        <h2 className="text-3xl font-bold mb-4 dark:text-white">{error || '话题不存在'}</h2>
-        <p className="text-gray-600 mb-4 dark:text-gray-400">您访问的话题可能已被删除或不存在。</p>
+      <div className="glass-card p-12 text-center animate-fade-in">
+        <div className="w-20 h-20 bg-rose-100 dark:bg-rose-900/50 rounded-3xl flex items-center justify-center mx-auto mb-6">
+          <svg className="w-10 h-10 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h2 className="text-3xl font-bold mb-4 text-slate-800 dark:text-slate-100">{error || '话题不存在'}</h2>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">您访问的话题可能已被删除或不存在。</p>
         <a
           href="/topics"
-          className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+          className="btn btn-primary"
         >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
           返回话题列表
         </a>
       </div>
@@ -191,11 +199,11 @@ const TopicDetail: React.FC = () => {
   return (
     <ErrorBoundary>
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white p-8 rounded-lg shadow-md mb-8 dark:bg-gray-800 dark:text-white">
+        <div className="glass-card p-8 mb-8 animate-fade-in">
           {isEditing ? (
-            <form onSubmit={handleEditSubmit} className="space-y-4">
+            <form onSubmit={handleEditSubmit} className="space-y-6">
               <div>
-                <label htmlFor="edit-title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label htmlFor="edit-title" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   话题标题 *
                 </label>
                 <input
@@ -204,12 +212,12 @@ const TopicDetail: React.FC = () => {
                   name="title"
                   value={editFormData.title}
                   onChange={handleEditChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="input-field"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="edit-description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label htmlFor="edit-description" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   话题描述 *
                 </label>
                 <textarea
@@ -218,12 +226,12 @@ const TopicDetail: React.FC = () => {
                   value={editFormData.description}
                   onChange={handleEditChange}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="input-field"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="edit-tags" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label htmlFor="edit-tags" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                   标签（用逗号分隔）
                 </label>
                 <input
@@ -232,14 +240,14 @@ const TopicDetail: React.FC = () => {
                   name="tags"
                   value={editFormData.tags}
                   onChange={handleEditChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  className="input-field"
                 />
               </div>
               <div className="flex justify-end space-x-3">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white"
+                  className="btn btn-ghost"
                   disabled={isSubmitting}
                 >
                   取消
@@ -247,7 +255,7 @@ const TopicDetail: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+                  className="btn btn-primary"
                 >
                   {isSubmitting ? '保存中...' : '保存'}
                 </button>
@@ -255,80 +263,99 @@ const TopicDetail: React.FC = () => {
             </form>
           ) : (
             <>
-              <div className="flex justify-between items-start mb-4">
-                <h2 className="text-3xl font-bold dark:text-white">{topic.title}</h2>
+              <div className="flex justify-between items-start mb-6">
+                <h2 className="text-4xl font-bold gradient-text">{topic.title}</h2>
                 {isOwner && (
                   <div className="flex space-x-2">
                     <button
                       onClick={handleEditClick}
-                      className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                      className="btn btn-ghost text-sm px-4 py-2"
                       aria-label="编辑话题"
                     >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
                       编辑
                     </button>
                     <button
                       onClick={handleDeleteClick}
-                      className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+                      className="btn btn-danger text-sm px-4 py-2"
                       aria-label="删除话题"
                     >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
                       删除
                     </button>
                   </div>
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-500 dark:text-gray-400">
-                <span>创建者: {topic.creator}</span>
-                <span>创建时间: {formatDate(topic.createdAt)}</span>
-                <span>更新时间: {formatDate(topic.updatedAt)}</span>
+              <div className="flex flex-wrap items-center gap-4 mb-6 text-sm text-slate-500 dark:text-slate-400">
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  {topic.creator}
+                </span>
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  创建: {formatDate(topic.createdAt)}
+                </span>
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  更新: {formatDate(topic.updatedAt)}
+                </span>
               </div>
 
-              <div className="flex flex-wrap gap-2 mb-4">
+              <div className="flex flex-wrap gap-2 mb-6">
                 {topic.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm dark:bg-gray-700 dark:text-gray-300"
+                    className="tag"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <div className="prose max-w-none mb-6 dark:prose-invert">
+              <div className="prose prose-lg max-w-none mb-8 text-slate-600 dark:text-slate-400 leading-relaxed">
                 <p>{topic.description}</p>
               </div>
             </>
           )}
 
           {!isEditing && (
-            <div className="flex flex-wrap items-center gap-4 mb-6">
+            <div className="flex flex-wrap items-center gap-4">
               {currentUser ? (
                 <button
                   onClick={handleToggleFavorite}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                    isFavorited 
-                      ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500' 
-                      : 'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
-                  }`}
+                  className={`btn ${isFavorited ? 'btn-danger' : 'btn-ghost border border-slate-200 dark:border-slate-700'}`}
                   aria-label={isFavorited ? '取消收藏' : '收藏话题'}
                 >
                   <svg 
                     className="w-5 h-5" 
-                    fill="currentColor" 
+                    fill={isFavorited ? 'currentColor' : 'none'}
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                   <span>{isFavorited ? '已收藏' : '收藏'}</span>
                 </button>
               ) : (
-                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-lg">
                   <svg 
                     className="w-5 h-5" 
-                    fill="currentColor" 
+                    fill="none"
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                   <span>登录后可收藏</span>
                 </div>
@@ -347,22 +374,27 @@ const TopicDetail: React.FC = () => {
         <CommentSection topic={topic} />
 
         {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full mx-4">
-              <h3 className="text-xl font-bold mb-4 dark:text-white">确认删除</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+            <div className="glass-card p-8 max-w-md w-full mx-4 animate-scale-in">
+              <div className="w-16 h-16 bg-rose-100 dark:bg-rose-900/50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <svg className="w-8 h-8 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold mb-4 text-center text-slate-800 dark:text-slate-100">确认删除</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-8 text-center">
                 确定要删除话题「{topic.title}」吗？此操作不可撤销，所有相关的内容项、评分和评论都将被删除。
               </p>
-              <div className="flex justify-end space-x-3">
+              <div className="flex justify-center space-x-3">
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white"
+                  className="btn btn-ghost"
                 >
                   取消
                 </button>
                 <button
                   onClick={handleDeleteConfirm}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                  className="btn btn-danger"
                 >
                   确认删除
                 </button>

@@ -94,66 +94,80 @@ function RatingComponent({
     <div className="space-y-6">
       <RatingStatsComponent topic={topic} contentItem={contentItem} />
       
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+      <div className="glass-card p-8 animate-fade-in">
         <h3 
           id="rating-title"
-          className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-4"
+          className="text-2xl font-bold gradient-text mb-6"
         >
           为「{contentItem.title}」评分
         </h3>
 
         {!isLoggedIn && (
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 p-4 rounded-lg mb-4">
-            <p className="font-medium">请先登录后再评分</p>
-            <a href="/" className="text-blue-600 dark:text-blue-400 hover:underline mt-1 inline-block">
-              点击此处登录
-            </a>
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 text-amber-700 dark:text-amber-400 p-4 rounded-xl mb-6 flex items-start gap-3">
+            <svg className="w-5 h-5 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div>
+              <p className="font-medium">请先登录后再评分</p>
+              <a href="/" className="text-blue-600 dark:text-blue-400 hover:underline mt-1 inline-block text-sm">
+                点击此处登录 →
+              </a>
+            </div>
           </div>
         )}
 
         {showSuccess && (
           <div 
-            className="bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 p-3 rounded-lg mb-4"
+            className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-400 p-4 rounded-xl mb-6 flex items-center gap-3 animate-fade-in"
             role="status"
             aria-live="polite"
           >
-            {existingRating ? '评分已更新！' : '评分成功！'}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="font-medium">{existingRating ? '评分已更新！' : '评分成功！'}</span>
           </div>
         )}
 
         {error && (
           <div 
             id="rating-error"
-            className="bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 p-3 rounded-lg mb-4"
+            className="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800/50 text-rose-700 dark:text-rose-400 p-4 rounded-xl mb-6 flex items-center gap-3"
             role="alert"
             aria-live="polite"
           >
-            {error}
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span>{error}</span>
           </div>
         )}
 
         {existingRating && !showSuccess && (
-          <div className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 p-3 rounded-lg mb-4">
-            您已评过此内容项，当前评分：{existingRating.score} 星
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-400 p-4 rounded-xl mb-6 flex items-center gap-3">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>您已评过此内容项，当前评分：{existingRating.score} 星</span>
           </div>
         )}
 
         <form 
           onSubmit={handleSubmit} 
-          className="space-y-4"
+          className="space-y-6"
           aria-labelledby="rating-title"
           aria-describedby={error ? 'rating-error' : undefined}
         >
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <label 
               htmlFor="rating" 
-              className="text-sm font-medium text-gray-700 dark:text-gray-300"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300"
               aria-label="评分"
             >
-              评分：
+              选择评分：
             </label>
             <div 
-              className="flex" 
+              className="flex items-center gap-2" 
               role="radiogroup" 
               aria-label={`为 ${contentItem.title} 评分`} 
               aria-required="true"
@@ -171,9 +185,11 @@ function RatingComponent({
                       handleRatingChange(star);
                     }
                   }}
-                  className={`text-3xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full transition-all duration-200 hover:scale-110 ${
-                    star <= displayScore ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'
-                  } ${!isLoggedIn ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
+                  className={`text-4xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg transition-all duration-200 ${
+                    star <= displayScore 
+                      ? 'text-amber-400 drop-shadow-lg scale-110' 
+                      : 'text-slate-300 dark:text-slate-600 hover:text-amber-300'
+                  } ${!isLoggedIn ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:scale-125'}`}
                   aria-label={`${star} 星`}
                   aria-checked={star === score}
                   aria-describedby="rating-description"
@@ -185,7 +201,7 @@ function RatingComponent({
             </div>
             <span 
               id="rating-description"
-              className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300"
+              className="text-lg font-semibold text-slate-700 dark:text-slate-300 min-w-[60px]"
             >
               {displayScore || score} 星
             </span>
@@ -195,11 +211,26 @@ function RatingComponent({
             <button
               type="submit"
               disabled={isSubmitting || !isLoggedIn}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="btn btn-primary"
               aria-label="提交评分"
               aria-busy={isSubmitting}
             >
-              {isSubmitting ? '评分中...' : existingRating ? '更新评分' : '提交评分'}
+              {isSubmitting ? (
+                <>
+                  <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  评分中...
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  {existingRating ? '更新评分' : '提交评分'}
+                </>
+              )}
             </button>
           </div>
         </form>
